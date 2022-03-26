@@ -1,34 +1,46 @@
 class Bicycle {
-  constructor(name, type, color) {
-    this. name = name;
-    this. type = type;
-    this.color = color;
-
+  constructor({ columns, data }) {
+    this.columns = columns;
+    this.data = data;
   }
-  
- }
- const data = [
-  ["Name","Type","Color"],
-  ["speda", "Bmx", "grey"],
-  ["speedaa", "Touring", "silver"],
-  ["peda", "mont", "black"]
-];
 
-function tableCreate(data){
-    let body = document.body,
-        tbl  = document.createElement('table');
-        tbl.width = "100px";
-        tbl.border = "2";
-      
-    for(let i = 0; i < data.length; i++){
-        let tr = tbl.insertRow();
-        for(let j = 0; j < data[i].length; j++){
-                let td = tr.insertCell();
-                td.appendChild(document.createTextNode(data[i][j]));
-                td.border = "2";
-                  
-          }
+  render(element) {
+    const headString = this.renderColumns();
+    const bodyString = this.renderData();
+    console.log(headString);
+    console.log(bodyString);
+    element.innerHTML = `<table class="table">${headString}${bodyString}</table>`;
+  }
+  renderColumns() {
+    let head = "<thead><tr>";
+    for (let i = 0; i < this.columns.length; i++) {
+      const element = this.columns[i];
+      head += `<th scope="col">${element}</th>`;
     }
-    body.appendChild(tbl);
+    head += "</tr></thead>";
+    console.log(head);
+    return head;
+  }
+
+  renderData() {
+    let body = "<tbody>";
+    for (let j = 0; j < this.data.length; j++) {
+      body += "<tr>";
+      for (let k = 0; k < this.data[j].length; k++) {
+        const element = this.data[j][k];
+        body += `<td scope="row">${element}</td>`;
+      }
+      body += "</tr>";
+    }
+    body += "</tbody>";
+    return body;
+  }
 }
-  tableCreate(data);
+new Bicycle({
+  columns: ["Type", "Color"],
+  data: [
+    ["Bmx", "grey"],
+    ["Touring", "silver"],
+    ["Connect", "black"],
+  ],
+}).render(document.getElementById("tabledata"));
